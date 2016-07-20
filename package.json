@@ -1,0 +1,14 @@
+{
+  "name": "leslie-bot",
+  "version": "1.0.0",
+  "description": "Leslie Bot for Slack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Nick Klepinger - bodiddlie@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "botkit": "^0.2.2"
+  }
+}
