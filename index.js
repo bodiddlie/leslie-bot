@@ -25,7 +25,8 @@ controller.on('slash_command', function (bot, message) {
 });
 
 var bot = controller.spawn({
-    token: process.env.SLACK_TOKEN
+    token: process.env.SLACK_TOKEN,
+    retry: Infinity
 });
 
 bot.startRTM(function (err, bot, payload) {
