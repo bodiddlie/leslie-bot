@@ -9,6 +9,8 @@
   "author": "Nick Klepinger - bodiddlie@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "botkit": "^0.2.2"
+    "axios": "^0.13.1",
+    "botkit": "^0.2.2",
+    "lodash": "^4.15.0"
   }
 }

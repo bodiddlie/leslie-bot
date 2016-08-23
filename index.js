@@ -1,13 +1,23 @@
 var Botkit = require('botkit');
+var axios = require('axios');
+var _ = require('lodash');
+
+var phrases = require('./leslie-phrases.json');
 
 var controller = Botkit.slackbot();
 
-controller.hears(['Red Robin', /that guy/], ['direct_message', 'direct_mention', 'mention', 'ambient'], function (bot, message) {
-    if (message.text === 'Red Robin') {
-        bot.reply(message, 'Yum!');
-    } else {
-        bot.reply(message, 'Hey, don\'t be that guy.');
-    }
+controller.hears(Object.keys(phrases), ['direct_message', 'direct_mention', 'mention', 'ambient'], function (bot, message) {
+    bot.reply(message, phrases[message.match[0].toLowerCase()]);
+});
+
+controller.hears('name', ['direct_message', 'direct_mention', 'mention'], function (bot, message) {
+  axios.get('http://api.randomuser.me/?inc=name')
+    .then(res => res.data)
+    .then(data => data.results)
+    .then(results => {
+      let name = _.capitalize(results[0].name.first);
+      bot.reply(message, `Right now, my name is ${name}. :)`)
+    });
 });
 
 var port = process.env.PORT || 8080
@@ -24,12 +34,14 @@ controller.on('slash_command', function (bot, message) {
     }
 });
 
+var token = process.env.SLACK_TOKEN || require('./token.json').token;
+
 var bot = controller.spawn({
-    token: process.env.SLACK_TOKEN,
+    token,
     retry: Infinity
 });
 
-bot.startRTM(function (err, bot, payload) {
+bot.startRTM(function (err) {
     if (err) {
         console.log(err);
         throw new Error('Could not connect to slack!');
